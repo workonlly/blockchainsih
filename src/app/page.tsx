@@ -27,11 +27,19 @@ export default function Home() {
             
             {/* Desktop Navigation */}
             <div className="hidden md:flex flex-row items-center gap-8">
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Home</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Store</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Marketplace</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">News</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Token</div>
+              <div onClick={scrollToTop} className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Home</div>
+              <Link href="/store">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Store</div>
+              </Link>
+              <Link href="/marketplace">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Marketplace</div>
+              </Link>
+              <Link href="/news">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">News</div>
+              </Link>
+              <Link href="/token">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Token</div>
+              </Link>
               <Link href="/login">
                 <button className="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition-colors">Login</button>
               </Link>
@@ -51,11 +59,19 @@ export default function Home() {
           {/* Mobile Navigation Menu */}
           <div className={`md:hidden mt-4 ${isMenuOpen ? 'block' : 'hidden'}`}>
             <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 space-y-4">
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Home</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Store</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Marketplace</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">News</div>
-              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Token</div>
+              <div onClick={scrollToTop} className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Home</div>
+              <Link href="/store">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Store</div>
+              </Link>
+              <Link href="/marketplace">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Marketplace</div>
+              </Link>
+              <Link href="/news">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">News</div>
+              </Link>
+              <Link href="/token">
+                <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Token</div>
+              </Link>
               <Link href="/login" className="block">
                 <button className="w-full bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition-colors">Login</button>
               </Link>
@@ -85,31 +101,120 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Stakeholder Categories */}
+          {/* Product Categories */}
           <div className="py-8 md:py-12 px-4 md:px-6 bg-gray-50/50 backdrop-filter backdrop-blur-sm">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 text-center">Stakeholder Access</h2>
-              <p className="text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto px-4">Specialized interfaces for each participant in the supply chain</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 text-center">Product Categories</h2>
+              <p className="text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto px-4">Explore our diverse range of fresh, blockchain-verified agricultural products</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                <div className="bg-green-800 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold mb-2">Farmers</h3>
-                    <p className="text-gray-200 text-sm md:text-base">Register produce, set fair prices, and track sales</p>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <Link href="/marketplace">
+                  <div className="bg-gradient-to-br from-red-500 to-red-600 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex flex-col justify-between p-6 group hover:scale-105">
+                    <div className="flex items-center justify-between">
+                      <div className="text-4xl md:text-5xl">🍎</div>
+                      <div className="bg-white/20 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2">Fruits</h3>
+                      <p className="text-red-100 text-sm md:text-base">Fresh seasonal fruits, organic varieties, and exotic imports</p>
+                      <div className="mt-3 flex items-center text-sm text-red-200">
+                        <span className="bg-red-400/30 px-2 py-1 rounded mr-2">250+ varieties</span>
+                        <span>🔗 Verified</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Link>
                 
-                <div className="bg-green-900 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
-                  <div>
-                    <h3 className="text-xl md:text-2xl font-bold mb-2">Distributors</h3>
-                    <p className="text-gray-200 text-sm md:text-base">Verify origin, manage logistics, and ensure quality</p>
+                <Link href="/marketplace">
+                  <div className="bg-gradient-to-br from-green-500 to-green-600 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex flex-col justify-between p-6 group hover:scale-105">
+                    <div className="flex items-center justify-between">
+                      <div className="text-4xl md:text-5xl">🥬</div>
+                      <div className="bg-white/20 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2">Vegetables</h3>
+                      <p className="text-green-100 text-sm md:text-base">Farm-fresh vegetables, leafy greens, and root vegetables</p>
+                      <div className="mt-3 flex items-center text-sm text-green-200">
+                        <span className="bg-green-400/30 px-2 py-1 rounded mr-2">180+ varieties</span>
+                        <span>🌱 Organic</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </Link>
                 
-                <div className="bg-green-950 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
+                <Link href="/marketplace">
+                  <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex flex-col justify-between p-6 group hover:scale-105">
+                    <div className="flex items-center justify-between">
+                      <div className="text-4xl md:text-5xl">🌾</div>
+                      <div className="bg-white/20 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2">Crops</h3>
+                      <p className="text-yellow-100 text-sm md:text-base">Grains, cereals, pulses, and staple food crops</p>
+                      <div className="mt-3 flex items-center text-sm text-yellow-200">
+                        <span className="bg-yellow-400/30 px-2 py-1 rounded mr-2">120+ varieties</span>
+                        <span>📊 Premium</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                
+                <Link href="/marketplace">
+                  <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex flex-col justify-between p-6 group hover:scale-105">
+                    <div className="flex items-center justify-between">
+                      <div className="text-4xl md:text-5xl">🥛</div>
+                      <div className="bg-white/20 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-xl md:text-2xl font-bold mb-2">Milk Products</h3>
+                      <p className="text-blue-100 text-sm md:text-base">Fresh dairy, cheese, yogurt, and organic milk products</p>
+                      <div className="mt-3 flex items-center text-sm text-blue-200">
+                        <span className="bg-blue-400/30 px-2 py-1 rounded mr-2">85+ products</span>
+                        <span>❄️ Fresh</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Category Stats */}
+              <div className="mt-8 md:mt-12 bg-white rounded-2xl shadow-lg p-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                   <div>
-                    <h3 className="text-xl md:text-2xl font-bold mb-2">Retailers</h3>
-                    <p className="text-gray-200 text-sm md:text-base">Confirm authenticity and provide transparency to consumers</p>
+                    <div className="text-2xl md:text-3xl font-bold text-red-600 mb-2">250+</div>
+                    <div className="text-sm text-gray-600">Fruit Varieties</div>
+                    <div className="text-xs text-gray-500 mt-1">Seasonal & Exotic</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">180+</div>
+                    <div className="text-sm text-gray-600">Vegetable Types</div>
+                    <div className="text-xs text-gray-500 mt-1">Organic & Fresh</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl md:text-3xl font-bold text-yellow-600 mb-2">120+</div>
+                    <div className="text-sm text-gray-600">Crop Varieties</div>
+                    <div className="text-xs text-gray-500 mt-1">Grains & Pulses</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">85+</div>
+                    <div className="text-sm text-gray-600">Dairy Products</div>
+                    <div className="text-xs text-gray-500 mt-1">Fresh & Pure</div>
                   </div>
                 </div>
               </div>

@@ -126,10 +126,7 @@ function page() {
           {/* Sign Up Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don&apos;t have a Krishi Card?{' '}
-              <Link href="/signup" className="text-green-600 hover:text-green-700 font-medium transition-colors">
-                Register here
-              </Link>
+              Don&apos;t have a Krishi Card? <Link href="/signup" className="text-green-600 hover:text-green-700 font-medium transition-colors">Register here</Link>
             </p>
           </div>
         </div>
