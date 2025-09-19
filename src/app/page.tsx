@@ -371,14 +371,45 @@ export default function Home() {
             </div>
           </div>
           
-          {/* CTA Section */}
+          {/* Footer Section */}
           <div className="py-8 md:py-12 px-4 md:px-6 bg-green-900 text-white">
-            <div className="max-w-7xl mx-auto text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Ready to bring transparency to agriculture?</h2>
-              <p className="text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">Join our platform today and be part of the agricultural revolution. Whether you&apos;re a farmer, distributor, retailer, or consumer, AgriChain helps you participate in a more transparent food system.</p>
-              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-6 md:mb-8">
-                <button className="bg-white text-green-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium">Register Now</button>
-                <button className="border border-white text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">Schedule Demo</button>
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                {/* Company Info */}
+                <div className="col-span-1 md:col-span-2">
+                  <div className="flex items-center mb-4">
+                    <Image src="/globe.svg" alt="Logo" width={32} height={32} className="mr-3 text-green-600" />
+                    <div className="text-2xl font-bold text-white">Agri<span className="text-green-300">Chain</span></div>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-4">Blockchain-powered transparency for agricultural supply chains. Connecting farmers, distributors, and consumers.</p>
+                </div>
+                
+                {/* Quick Links */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Quick Links</h3>
+                  <div className="space-y-2">
+                    <Link href="/store" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Store</Link>
+                    <Link href="/marketplace" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Marketplace</Link>
+                    <Link href="/news" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">News</Link>
+                    <Link href="/token" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Token</Link>
+                  </div>
+                </div>
+                
+                {/* Support Links */}
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-4">Support</h3>
+                  <div className="space-y-2">
+                    <Link href="/login" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Login</Link>
+                    <a href="#" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Help Center</a>
+                    <a href="#" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Contact Us</a>
+                    <a href="#" className="block text-gray-300 hover:text-green-300 transition-colors text-sm">Privacy Policy</a>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Footer Bottom */}
+              <div className="border-t border-green-800 mt-8 pt-8 text-center">
+                <p className="text-gray-400 text-sm">&copy; 2025 AgriChain. All rights reserved. Blockchain for Agriculture.</p>
               </div>
             </div>
           </div>
