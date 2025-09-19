@@ -97,7 +97,7 @@ export default function Home() {
               <div className="md:w-1/2 flex justify-center">
                 <div className="relative w-64 h-64 md:w-80 md:h-80">
                   <div className="absolute inset-0 bg-green-100 rounded-full opacity-20"></div>
-                  <Image src="/window.svg" alt="Blockchain" width={250} height={250} className="relative z-10 md:w-[300px] md:h-[300px]" />
+                  <div className="relative z-10 w-full h-full flex items-center justify-center text-8xl md:text-9xl">🌾</div>
                 </div>
               </div>
             </div>
