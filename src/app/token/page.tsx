@@ -14,11 +14,10 @@ interface Transaction {
   txHash: string;
 }
 
-function page() {
+function Page() {
   const [activeTab, setActiveTab] = useState('transfer');
   const [transferAmount, setTransferAmount] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
-  const [selectedContact, setSelectedContact] = useState('');
 
   // Mock user data
   const userInfo = {
@@ -95,7 +94,6 @@ function page() {
     alert(`Transfer of ${transferAmount} AgriCoins to ${recipientAddress} initiated!`);
     setTransferAmount('');
     setRecipientAddress('');
-    setSelectedContact('');
   };
 
   const formatAddress = (address: string) => {
@@ -471,7 +469,6 @@ function page() {
                         key={index}
                         onClick={() => {
                           setRecipientAddress(contact.address);
-                          setSelectedContact(contact.name);
                           setActiveTab('transfer');
                         }}
                         className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border transition-colors"
@@ -527,4 +524,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

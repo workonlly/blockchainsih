@@ -3,9 +3,10 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-function page() {
+function Page() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showInquiryModal, setShowInquiryModal] = useState(false);
 
   const categories = [
     { name: 'All', icon: '🏪', count: '50,000+' },
@@ -369,4 +370,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

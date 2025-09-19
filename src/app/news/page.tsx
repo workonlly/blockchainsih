@@ -3,7 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-function page() {
+function Page() {
   const newsArticles = [
     {
       id: 1,
@@ -234,4 +234,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

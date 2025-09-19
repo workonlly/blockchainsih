@@ -28,7 +28,7 @@ interface Analytics {
   monthlyGrowth: number;
 }
 
-function page() {
+function Page() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -797,4 +797,4 @@ function page() {
   )
 }
 
-export default page
+export default Page
