@@ -14,10 +14,31 @@ interface Transaction {
   txHash: string;
 }
 
+interface NFT {
+  id: string;
+  tokenId: number;
+  name: string;
+  description: string;
+  image: string;
+  attributes: {
+    trait_type: string;
+    value: string | number;
+  }[];
+  contractAddress: string;
+  creator: string;
+  owner: string;
+  price?: number;
+  isForSale: boolean;
+  rarity: 'Common' | 'Uncommon' | 'Rare' | 'Epic' | 'Legendary';
+  category: 'Farm Certificate' | 'Product Quality' | 'Achievement' | 'Harvest Record';
+}
+
 function Page() {
-  const [activeTab, setActiveTab] = useState('transfer');
+  const [activeTab, setActiveTab] = useState('nfts');
   const [transferAmount, setTransferAmount] = useState('');
   const [recipientAddress, setRecipientAddress] = useState('');
+  const [selectedNFT, setSelectedNFT] = useState<NFT | null>(null);
+  const [nftViewMode, setNftViewMode] = useState<'owned' | 'marketplace'>('owned');
 
   // Mock user data
   const userInfo = {
@@ -77,6 +98,114 @@ function Page() {
     }
   ];
 
+  // ERC-721 NFT Collection
+  const ownedNFTs: NFT[] = [
+    {
+      id: 'nft001',
+      tokenId: 1234,
+      name: 'Organic Farm Certificate #1234',
+      description: 'Official organic certification for Rajesh Kumar\'s farm in Pune, Maharashtra. This NFT represents verified organic farming practices and sustainable agriculture methods.',
+      image: '🌱',
+      attributes: [
+        { trait_type: 'Farm Size', value: '5.2 acres' },
+        { trait_type: 'Certification Date', value: '2024-01-15' },
+        { trait_type: 'Organic Score', value: 95 },
+        { trait_type: 'Location', value: 'Pune, Maharashtra' },
+        { trait_type: 'Crop Types', value: 'Multi-crop' }
+      ],
+      contractAddress: '0x721abc...def123',
+      creator: 'AgriChain Certification Authority',
+      owner: '0x742d35cc6bF4D7D4A8B7F23B5F23C9A2F4E3D8C1',
+      isForSale: false,
+      rarity: 'Epic',
+      category: 'Farm Certificate'
+    },
+    {
+      id: 'nft002',
+      tokenId: 5678,
+      name: 'Premium Wheat Harvest 2024',
+      description: 'High-quality wheat harvest record from certified organic farm. This NFT represents 150 quintals of premium wheat with blockchain-verified quality metrics.',
+      image: '🌾',
+      attributes: [
+        { trait_type: 'Harvest Date', value: '2024-04-20' },
+        { trait_type: 'Quantity', value: '150 quintals' },
+        { trait_type: 'Quality Grade', value: 'A+' },
+        { trait_type: 'Moisture Content', value: '12%' },
+        { trait_type: 'Protein Content', value: '14.2%' }
+      ],
+      contractAddress: '0x721abc...def123',
+      creator: 'AgriChain Quality Assurance',
+      owner: '0x742d35cc6bF4D7D4A8B7F23B5F23C9A2F4E3D8C1',
+      price: 250,
+      isForSale: true,
+      rarity: 'Rare',
+      category: 'Harvest Record'
+    },
+    {
+      id: 'nft003',
+      tokenId: 9012,
+      name: 'Sustainable Farmer Achievement',
+      description: 'Recognition for implementing sustainable farming practices and contributing to environmental conservation through regenerative agriculture.',
+      image: '🏆',
+      attributes: [
+        { trait_type: 'Achievement Date', value: '2024-06-15' },
+        { trait_type: 'Carbon Offset', value: '2.3 tons CO2' },
+        { trait_type: 'Water Saved', value: '5000 liters' },
+        { trait_type: 'Biodiversity Score', value: 88 },
+        { trait_type: 'Achievement Level', value: 'Gold' }
+      ],
+      contractAddress: '0x721abc...def123',
+      creator: 'AgriChain Environmental Council',
+      owner: '0x742d35cc6bF4D7D4A8B7F23B5F23C9A2F4E3D8C1',
+      isForSale: false,
+      rarity: 'Legendary',
+      category: 'Achievement'
+    }
+  ];
+
+  const marketplaceNFTs: NFT[] = [
+    {
+      id: 'nft004',
+      tokenId: 3456,
+      name: 'Basmati Rice Quality Certificate',
+      description: 'Premium basmati rice quality certification with verified aroma and grain length specifications.',
+      image: '🍚',
+      attributes: [
+        { trait_type: 'Variety', value: 'Basmati 1121' },
+        { trait_type: 'Grain Length', value: '7.2mm' },
+        { trait_type: 'Aroma Score', value: 92 },
+        { trait_type: 'Quantity', value: '500 kg' }
+      ],
+      contractAddress: '0x721abc...def123',
+      creator: 'Suresh Patel Farms',
+      owner: '0x8f9e...3a2b',
+      price: 180,
+      isForSale: true,
+      rarity: 'Uncommon',
+      category: 'Product Quality'
+    },
+    {
+      id: 'nft005',
+      tokenId: 7890,
+      name: 'Mango Grove Heritage NFT',
+      description: 'Century-old mango grove with heritage variety trees, representing traditional farming wisdom.',
+      image: '🥭',
+      attributes: [
+        { trait_type: 'Tree Age', value: '100+ years' },
+        { trait_type: 'Variety', value: 'Alphonso Heritage' },
+        { trait_type: 'Annual Yield', value: '2000 mangoes' },
+        { trait_type: 'Heritage Status', value: 'Certified' }
+      ],
+      contractAddress: '0x721abc...def123',
+      creator: 'Heritage Farms Collective',
+      owner: '0x1a2b...9c8d',
+      price: 500,
+      isForSale: true,
+      rarity: 'Legendary',
+      category: 'Farm Certificate'
+    }
+  ];
+
   const quickContacts = [
     { name: 'Suresh Patel', address: '0x8f9e...3a2b', type: 'Equipment Supplier' },
     { name: 'AgriChain Store', address: '0x1a2b...9c8d', type: 'Marketplace' },
@@ -98,6 +227,27 @@ function Page() {
 
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case 'Common': return 'text-gray-600 bg-gray-100';
+      case 'Uncommon': return 'text-green-600 bg-green-100';
+      case 'Rare': return 'text-blue-600 bg-blue-100';
+      case 'Epic': return 'text-purple-600 bg-purple-100';
+      case 'Legendary': return 'text-yellow-600 bg-yellow-100';
+      default: return 'text-gray-600 bg-gray-100';
+    }
+  };
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case 'Farm Certificate': return '📜';
+      case 'Product Quality': return '⭐';
+      case 'Achievement': return '🏆';
+      case 'Harvest Record': return '📊';
+      default: return '🎨';
+    }
   };
 
   const getTransactionIcon = (type: string) => {
@@ -125,7 +275,7 @@ function Page() {
             </Link>
             <div className="flex items-center">
               <Image src="/globe.svg" alt="Logo" width={24} height={24} className="mr-2" />
-              <span className="text-lg font-bold text-gray-800">AgriCoin Wallet</span>
+              <span className="text-lg font-bold text-gray-800">AgriChain NFT Wallet</span>
             </div>
           </div>
         </header>
@@ -180,49 +330,45 @@ function Page() {
                   </div>
                 </div>
 
-                {/* Token Balances */}
+                {/* NFT Portfolio */}
                 <div className="lg:w-2/3">
-                  <h3 className="text-xl font-bold text-gray-800 mb-6">Token Overview</h3>
+                  <h3 className="text-xl font-bold text-gray-800 mb-6">NFT Portfolio Overview</h3>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                    <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-xl p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm opacity-90">Available Balance</span>
-                        <span className="text-2xl">🪙</span>
+                        <span className="text-sm opacity-90">Total NFTs</span>
+                        <span className="text-2xl">🎨</span>
                       </div>
-                      <div className="text-2xl font-bold">{tokenBalances.available.toLocaleString()}</div>
-                      <div className="text-sm opacity-90">AgriCoins</div>
+                      <div className="text-2xl font-bold">{ownedNFTs.length}</div>
+                      <div className="text-sm opacity-90">Unique Items</div>
                     </div>
-                    
-                    <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-xl p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm opacity-90">Staked Tokens</span>
-                        <span className="text-2xl">🔒</span>
-                      </div>
-                      <div className="text-2xl font-bold">{tokenBalances.locked.toLocaleString()}</div>
-                      <div className="text-sm opacity-90">Locked for rewards</div>
-                    </div>
-                    
+
                     <div className="bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-xl p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm opacity-90">Staking Rewards</span>
-                        <span className="text-2xl">🎁</span>
+                        <span className="text-sm opacity-90">Legendary NFTs</span>
+                        <span className="text-2xl">�</span>
                       </div>
-                      <div className="text-2xl font-bold">{tokenBalances.stakingRewards.toLocaleString()}</div>
-                      <div className="text-sm opacity-90">Earned this month</div>
+                      <div className="text-2xl font-bold">{ownedNFTs.filter(nft => nft.rarity === 'Legendary').length}</div>
+                      <div className="text-sm opacity-90">Rare Collection</div>
                     </div>
                   </div>
 
                   <div className="bg-gray-50 rounded-xl p-4">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-gray-600">Total Portfolio Value</span>
-                      <span className="text-2xl font-bold text-gray-800">
-                        {tokenBalances.agriCoin.toLocaleString()} AC
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">≈ ₹{(tokenBalances.agriCoin * 15.5).toLocaleString()}</span>
-                      <span className="text-green-600">+12.5% this month</span>
+                    <h4 className="font-medium text-gray-800 mb-3">Collection Breakdown</h4>
+                    <div className="space-y-2">
+                      {['Farm Certificate', 'Product Quality', 'Achievement', 'Harvest Record'].map(category => {
+                        const count = ownedNFTs.filter(nft => nft.category === category).length;
+                        return (
+                          <div key={category} className="flex justify-between items-center">
+                            <span className="text-sm text-gray-600 flex items-center">
+                              <span className="mr-2">{getCategoryIcon(category)}</span>
+                              {category}
+                            </span>
+                            <span className="font-medium">{count}</span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -237,7 +383,7 @@ function Page() {
             
             {/* Tab Navigation */}
             <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 mb-6">
-              {['transfer', 'receive', 'stake', 'history'].map((tab) => (
+              {['send', 'receive', 'nfts', 'history'].map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -247,7 +393,10 @@ function Page() {
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
-                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {tab === 'nfts' ? 'NFTs' : 
+                   tab === 'send' ? 'Send NFT' :
+                   tab === 'receive' ? 'Receive NFT' :
+                   tab.charAt(0).toUpperCase() + tab.slice(1)}
                 </button>
               ))}
             </div>
@@ -256,14 +405,42 @@ function Page() {
               
               {/* Main Action Panel */}
               <div className="lg:col-span-2">
-                {activeTab === 'transfer' && (
+                {activeTab === 'send' && (
                   <div className="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">Send AgriCoins</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-6">Send NFT</h3>
                     
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Recipient Address or Contact
+                          Select NFT to Send
+                        </label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-60 overflow-y-auto">
+                          {ownedNFTs.map((nft) => (
+                            <div
+                              key={nft.id}
+                              className={`border rounded-lg p-3 cursor-pointer transition-all ${
+                                selectedNFT?.id === nft.id ? 'border-green-500 bg-green-50' : 'border-gray-200 hover:border-gray-300'
+                              }`}
+                              onClick={() => setSelectedNFT(nft)}
+                            >
+                              <div className="flex items-center space-x-3">
+                                <span className="text-2xl">{nft.image}</span>
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-medium text-gray-800 truncate">{nft.name}</p>
+                                  <p className="text-xs text-gray-500">#{nft.tokenId}</p>
+                                  <span className={`inline-block px-2 py-1 rounded-full text-xs ${getRarityColor(nft.rarity)}`}>
+                                    {nft.rarity}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Recipient Address
                         </label>
                         <div className="relative">
                           <input
@@ -281,64 +458,53 @@ function Page() {
 
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Amount (AgriCoins)
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="number"
-                            value={transferAmount}
-                            onChange={(e) => setTransferAmount(e.target.value)}
-                            placeholder="0.00"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                          />
-                          <div className="absolute right-3 top-3 flex items-center space-x-2">
-                            <span className="text-sm text-gray-500">AC</span>
-                            <button 
-                              onClick={() => setTransferAmount(tokenBalances.available.toString())}
-                              className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded"
-                            >
-                              MAX
-                            </button>
-                          </div>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Available: {tokenBalances.available.toLocaleString()} AC
-                        </p>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Transaction Note (Optional)
+                          Transfer Note (Optional)
                         </label>
                         <input
                           type="text"
-                          placeholder="Equipment purchase, seeds payment, etc."
+                          placeholder="Gift, sale, trade, etc."
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                         />
                       </div>
 
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="flex justify-between text-sm mb-2">
-                          <span>Amount:</span>
-                          <span>{transferAmount || '0'} AC</span>
-                        </div>
-                        <div className="flex justify-between text-sm mb-2">
-                          <span>Network Fee:</span>
-                          <span>0.1 AC</span>
-                        </div>
-                        <div className="border-t pt-2">
-                          <div className="flex justify-between font-medium">
-                            <span>Total:</span>
-                            <span>{(parseFloat(transferAmount) + 0.1 || 0.1).toFixed(1)} AC</span>
+                      {selectedNFT && (
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-800 mb-2">Transfer Summary</h4>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>NFT:</span>
+                            <span>{selectedNFT.name}</span>
+                          </div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Token ID:</span>
+                            <span>#{selectedNFT.tokenId}</span>
+                          </div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Gas Fee:</span>
+                            <span>~0.005 ETH</span>
+                          </div>
+                          <div className="border-t pt-2">
+                            <div className="flex justify-between font-medium">
+                              <span>Status:</span>
+                              <span className="text-green-600">Ready to Transfer</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )}
 
                       <button
-                        onClick={handleTransfer}
-                        className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                        onClick={() => {
+                          if (!selectedNFT || !recipientAddress) {
+                            alert('Please select an NFT and enter recipient address');
+                            return;
+                          }
+                          alert(`Transfer of ${selectedNFT.name} to ${recipientAddress} initiated!`);
+                          setSelectedNFT(null);
+                          setRecipientAddress('');
+                        }}
+                        disabled={!selectedNFT || !recipientAddress}
+                        className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
-                        Send AgriCoins
+                        Transfer NFT
                       </button>
                     </div>
                   </div>
@@ -346,7 +512,7 @@ function Page() {
 
                 {activeTab === 'receive' && (
                   <div className="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">Receive AgriCoins</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-6">Receive NFTs</h3>
                     
                     <div className="text-center">
                       <div className="w-48 h-48 bg-gray-100 rounded-xl flex items-center justify-center mx-auto mb-4">
@@ -366,92 +532,215 @@ function Page() {
                         </button>
                       </div>
                       
+                      <div className="bg-blue-50 rounded-lg p-4 mb-4">
+                        <h4 className="font-medium text-blue-800 mb-2">Supported NFT Standards</h4>
+                        <div className="flex justify-center space-x-4 text-sm">
+                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">ERC-721</span>
+                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">ERC-1155</span>
+                          <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">Agricultural NFTs</span>
+                        </div>
+                      </div>
+                      
                       <p className="text-sm text-gray-600">
-                        Share this address or QR code to receive AgriCoins from other users.
+                        Share this address or QR code to receive NFTs from other users. Make sure the sender supports the same network.
                       </p>
                     </div>
                   </div>
                 )}
 
-                {activeTab === 'stake' && (
+                {activeTab === 'nfts' && (
                   <div className="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">Stake AgriCoins</h3>
-                    
-                    <div className="space-y-4">
-                      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-4">
-                        <h4 className="font-medium text-gray-800 mb-2">Current Staking Pool</h4>
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div>
-                            <span className="text-gray-600">APY:</span>
-                            <span className="font-bold text-green-600 ml-2">12.5%</span>
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-bold text-gray-800">ERC-721 NFT Collection</h3>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => setNftViewMode('owned')}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            nftViewMode === 'owned'
+                              ? 'bg-green-600 text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          My NFTs ({ownedNFTs.length})
+                        </button>
+                        <button
+                          onClick={() => setNftViewMode('marketplace')}
+                          className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            nftViewMode === 'marketplace'
+                              ? 'bg-green-600 text-white'
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          Marketplace
+                        </button>
+                      </div>
+                    </div>
+
+                    {nftViewMode === 'owned' && (
+                      <div className="space-y-4">
+                        {ownedNFTs.length === 0 ? (
+                          <div className="text-center py-12">
+                            <div className="text-6xl mb-4">🎨</div>
+                            <h4 className="text-lg font-medium text-gray-800 mb-2">No NFTs Yet</h4>
+                            <p className="text-gray-600 mb-4">Start your agricultural NFT collection by earning certificates and achievements.</p>
+                            <button 
+                              onClick={() => setNftViewMode('marketplace')}
+                              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+                            >
+                              Browse Marketplace
+                            </button>
                           </div>
-                          <div>
-                            <span className="text-gray-600">Lock Period:</span>
-                            <span className="font-bold ml-2">30 days</span>
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {ownedNFTs.map((nft) => (
+                              <div
+                                key={nft.id}
+                                className="border rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer"
+                                onClick={() => setSelectedNFT(nft)}
+                              >
+                                <div className="flex items-center justify-between mb-3">
+                                  <div className="flex items-center space-x-2">
+                                    <span className="text-3xl">{nft.image}</span>
+                                    <span className="text-xl">{getCategoryIcon(nft.category)}</span>
+                                  </div>
+                                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRarityColor(nft.rarity)}`}>
+                                    {nft.rarity}
+                                  </span>
+                                </div>
+                                
+                                <h4 className="font-bold text-gray-800 mb-2 line-clamp-1">{nft.name}</h4>
+                                <p className="text-sm text-gray-600 mb-3 line-clamp-2">{nft.description}</p>
+                                
+                                <div className="flex justify-between items-center text-xs text-gray-500">
+                                  <span>Token ID: #{nft.tokenId}</span>
+                                  {nft.isForSale && nft.price && (
+                                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded font-medium">
+                                      {nft.price} AC
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                          <div>
-                            <span className="text-gray-600">Min. Stake:</span>
-                            <span className="font-bold ml-2">100 AC</span>
-                          </div>
-                          <div>
-                            <span className="text-gray-600">Your Staked:</span>
-                            <span className="font-bold ml-2">{tokenBalances.locked} AC</span>
-                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {nftViewMode === 'marketplace' && (
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {marketplaceNFTs.map((nft) => (
+                            <div
+                              key={nft.id}
+                              className="border rounded-xl p-4 hover:shadow-md transition-shadow cursor-pointer"
+                              onClick={() => setSelectedNFT(nft)}
+                            >
+                              <div className="flex items-center justify-between mb-3">
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-3xl">{nft.image}</span>
+                                  <span className="text-xl">{getCategoryIcon(nft.category)}</span>
+                                </div>
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium ${getRarityColor(nft.rarity)}`}>
+                                  {nft.rarity}
+                                </span>
+                              </div>
+                              
+                              <h4 className="font-bold text-gray-800 mb-2 line-clamp-1">{nft.name}</h4>
+                              <p className="text-sm text-gray-600 mb-3 line-clamp-2">{nft.description}</p>
+                              
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-500">by {nft.creator}</span>
+                                <div className="flex items-center space-x-2">
+                                  <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">
+                                    {nft.price} AC
+                                  </span>
+                                  <button className="bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700 transition-colors">
+                                    Buy
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Amount to Stake
-                        </label>
-                        <input
-                          type="number"
-                          placeholder="100"
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                        />
-                      </div>
-
-                      <button className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors font-medium">
-                        Stake Tokens
-                      </button>
-                    </div>
+                    )}
                   </div>
                 )}
 
                 {activeTab === 'history' && (
                   <div className="bg-white rounded-xl shadow-sm border p-6">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">Transaction History</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-6">NFT Transaction History</h3>
                     
                     <div className="space-y-4">
-                      {recentTransactions.map((tx) => (
-                        <div key={tx.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
-                          <div className="flex items-center space-x-4">
-                            <div className="text-2xl">{getTransactionIcon(tx.type)}</div>
-                            <div>
-                              <p className="font-medium text-gray-800">
-                                {tx.type === 'send' ? `Sent to ${tx.recipient}` :
-                                 tx.type === 'receive' ? `Received from ${tx.sender}` :
-                                 tx.type === 'stake' ? 'Staked tokens' :
-                                 `${tx.sender}`}
-                              </p>
-                              <p className="text-sm text-gray-600">
-                                {new Date(tx.timestamp).toLocaleDateString()} • {formatAddress(tx.txHash)}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <p className={`font-bold ${tx.type === 'send' ? 'text-red-600' : 'text-green-600'}`}>
-                              {tx.type === 'send' ? '-' : '+'}{tx.amount} AC
-                            </p>
-                            <p className={`text-xs ${
-                              tx.status === 'completed' ? 'text-green-600' :
-                              tx.status === 'pending' ? 'text-yellow-600' : 'text-red-600'
-                            }`}>
-                              {tx.status}
+                      <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-2xl">📥</div>
+                          <div>
+                            <p className="font-medium text-gray-800">Received Organic Farm Certificate #1234</p>
+                            <p className="text-sm text-gray-600">
+                              2024-01-15 • from AgriChain Certification Authority
                             </p>
                           </div>
                         </div>
-                      ))}
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">+1 NFT</p>
+                          <p className="text-xs text-green-600">completed</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-2xl">📥</div>
+                          <div>
+                            <p className="font-medium text-gray-800">Earned Premium Wheat Harvest 2024</p>
+                            <p className="text-sm text-gray-600">
+                              2024-04-20 • from AgriChain Quality Assurance
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-green-600">+1 NFT</p>
+                          <p className="text-xs text-green-600">completed</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-2xl">🏆</div>
+                          <div>
+                            <p className="font-medium text-gray-800">Unlocked Sustainable Farmer Achievement</p>
+                            <p className="text-sm text-gray-600">
+                              2024-06-15 • from AgriChain Environmental Council
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-purple-600">+1 Legendary NFT</p>
+                          <p className="text-xs text-green-600">completed</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
+                        <div className="flex items-center space-x-4">
+                          <div className="text-2xl">📤</div>
+                          <div>
+                            <p className="font-medium text-gray-800">Listed Premium Wheat Harvest for Sale</p>
+                            <p className="text-sm text-gray-600">
+                              2024-09-18 • Price: 250 AC
+                            </p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-blue-600">Listed</p>
+                          <p className="text-xs text-blue-600">active</p>
+                        </div>
+                      </div>
+
+                      <div className="text-center py-4">
+                        <button className="text-green-600 hover:text-green-700 text-sm font-medium">
+                          View All Transactions
+                        </button>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -462,63 +751,181 @@ function Page() {
                 
                 {/* Quick Contacts */}
                 <div className="bg-white rounded-xl shadow-sm border p-4">
-                  <h4 className="font-medium text-gray-800 mb-4">Quick Contacts</h4>
+                  <h4 className="font-medium text-gray-800 mb-4">Quick NFT Actions</h4>
                   <div className="space-y-2">
-                    {quickContacts.map((contact, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          setRecipientAddress(contact.address);
-                          setActiveTab('transfer');
-                        }}
-                        className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border transition-colors"
-                      >
-                        <p className="font-medium text-sm">{contact.name}</p>
-                        <p className="text-xs text-gray-600">{contact.type}</p>
-                        <p className="text-xs text-gray-500 font-mono">{formatAddress(contact.address)}</p>
-                      </button>
-                    ))}
+                    <button
+                      onClick={() => setActiveTab('nfts')}
+                      className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border transition-colors"
+                    >
+                      <p className="font-medium text-sm flex items-center">
+                        <span className="mr-2">🎨</span>
+                        View Collection
+                      </p>
+                      <p className="text-xs text-gray-600">Browse your NFTs</p>
+                    </button>
+                    <button
+                      onClick={() => setActiveTab('send')}
+                      className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border transition-colors"
+                    >
+                      <p className="font-medium text-sm flex items-center">
+                        <span className="mr-2">📤</span>
+                        Send NFT
+                      </p>
+                      <p className="text-xs text-gray-600">Transfer to others</p>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setNftViewMode('marketplace');
+                        setActiveTab('nfts');
+                      }}
+                      className="w-full text-left p-3 rounded-lg hover:bg-gray-50 border transition-colors"
+                    >
+                      <p className="font-medium text-sm flex items-center">
+                        <span className="mr-2">🛒</span>
+                        Browse Marketplace
+                      </p>
+                      <p className="text-xs text-gray-600">Buy from others</p>
+                    </button>
                   </div>
                 </div>
 
-                {/* Price Info */}
+                {/* NFT Stats */}
                 <div className="bg-white rounded-xl shadow-sm border p-4">
-                  <h4 className="font-medium text-gray-800 mb-4">Market Info</h4>
+                  <h4 className="font-medium text-gray-800 mb-4">Collection Stats</h4>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">AgriCoin Price</span>
-                      <span className="font-bold">₹15.50</span>
+                      <span className="text-sm text-gray-600">Total NFTs</span>
+                      <span className="font-bold">{ownedNFTs.length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">24h Change</span>
-                      <span className="text-green-600 font-medium">+2.3%</span>
+                      <span className="text-sm text-gray-600">Legendary Items</span>
+                      <span className="text-yellow-600 font-medium">{ownedNFTs.filter(nft => nft.rarity === 'Legendary').length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Market Cap</span>
-                      <span className="font-medium">₹45.2M</span>
+                      <span className="text-sm text-gray-600">Listed for Sale</span>
+                      <span className="text-green-600 font-medium">{ownedNFTs.filter(nft => nft.isForSale).length}</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Quick Actions */}
-                <div className="bg-white rounded-xl shadow-sm border p-4">
-                  <h4 className="font-medium text-gray-800 mb-4">Quick Actions</h4>
-                  <div className="space-y-2">
-                    <button className="w-full bg-blue-50 text-blue-700 py-2 px-4 rounded-lg hover:bg-blue-100 transition-colors text-sm">
-                      Buy More Tokens
-                    </button>
-                    <button className="w-full bg-green-50 text-green-700 py-2 px-4 rounded-lg hover:bg-green-100 transition-colors text-sm">
-                      Withdraw to Bank
-                    </button>
-                    <button className="w-full bg-purple-50 text-purple-700 py-2 px-4 rounded-lg hover:bg-purple-100 transition-colors text-sm">
-                      View Analytics
-                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </main>
+
+        {/* NFT Detail Modal */}
+        {selectedNFT && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-4xl">{selectedNFT.image}</span>
+                    <span className="text-2xl">{getCategoryIcon(selectedNFT.category)}</span>
+                  </div>
+                  <button
+                    onClick={() => setSelectedNFT(null)}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-2xl font-bold text-gray-800">{selectedNFT.name}</h2>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getRarityColor(selectedNFT.rarity)}`}>
+                      {selectedNFT.rarity}
+                    </span>
+                  </div>
+                  <p className="text-gray-600 mb-4">{selectedNFT.description}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-3">NFT Details</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Token ID:</span>
+                        <span className="font-medium">#{selectedNFT.tokenId}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Contract:</span>
+                        <span className="font-mono text-xs">{formatAddress(selectedNFT.contractAddress)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Creator:</span>
+                        <span className="font-medium">{selectedNFT.creator}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Owner:</span>
+                        <span className="font-mono text-xs">{formatAddress(selectedNFT.owner)}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Category:</span>
+                        <span className="font-medium">{selectedNFT.category}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold text-gray-800 mb-3">Attributes</h3>
+                    <div className="space-y-2">
+                      {selectedNFT.attributes.map((attr, index) => (
+                        <div key={index} className="bg-gray-50 rounded-lg p-3">
+                          <div className="text-xs text-gray-600 mb-1">{attr.trait_type}</div>
+                          <div className="font-medium text-gray-800">{attr.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {selectedNFT.isForSale && selectedNFT.price && (
+                  <div className="border-t pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <div className="text-sm text-gray-600">Current Price</div>
+                        <div className="text-2xl font-bold text-gray-800">{selectedNFT.price} AC</div>
+                        <div className="text-sm text-gray-500">≈ ₹{(selectedNFT.price * 15.5).toLocaleString()}</div>
+                      </div>
+                      <div className="space-x-3">
+                        {selectedNFT.owner === userInfo.walletAddress ? (
+                          <button className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                            Remove from Sale
+                          </button>
+                        ) : (
+                          <>
+                            <button className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                              Make Offer
+                            </button>
+                            <button className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                              Buy Now
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {selectedNFT.owner === userInfo.walletAddress && !selectedNFT.isForSale && (
+                  <div className="border-t pt-6">
+                    <div className="flex space-x-3">
+                      <button className="flex-1 border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                        Transfer NFT
+                      </button>
+                      <button className="flex-1 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        List for Sale
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
