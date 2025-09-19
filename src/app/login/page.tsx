@@ -7,27 +7,27 @@ function page() {
     <div className="min-h-screen bg-gradient-to-br from-green-900 to-green-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Home Link */}
-        <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-8 transition-colors">
+        <Link href="/" className="inline-flex items-center text-white/80 hover:text-white mb-6 md:mb-8 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to Home
+          <span className="text-sm md:text-base">Back to Home</span>
         </Link>
 
         {/* Login Card */}
-        <div className="bg-white/95 backdrop-filter backdrop-blur-sm rounded-2xl shadow-xl p-8">
+        <div className="bg-white/95 backdrop-filter backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8">
           {/* Logo and Title */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-6 md:mb-8">
             <div className="flex items-center justify-center mb-4">
-              <Image src="/globe.svg" alt="AgriChain Logo" width={48} height={48} className="mr-3" />
-              <div className="text-3xl font-bold text-gray-800">Agri<span className="text-green-700">Chain</span></div>
+              <Image src="/globe.svg" alt="AgriChain Logo" width={40} height={40} className="mr-3 md:w-12 md:h-12" />
+              <div className="text-2xl md:text-3xl font-bold text-gray-800">Agri<span className="text-green-700">Chain</span></div>
             </div>
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
-            <p className="text-gray-600">Sign in with your Krishi Card credentials</p>
+            <h1 className="text-xl md:text-2xl font-bold text-gray-800 mb-2">Welcome Back</h1>
+            <p className="text-gray-600 text-sm md:text-base">Sign in with your Krishi Card credentials</p>
           </div>
 
           {/* Login Form */}
-          <form className="space-y-6">
+          <form className="space-y-5 md:space-y-6">
             {/* Krishi Card Number Field */}
             <div>
               <label htmlFor="krishiCard" className="block text-sm font-medium text-gray-700 mb-2">
@@ -40,7 +40,7 @@ function page() {
                 required
                 pattern="[0-9]{12}"
                 maxLength={12}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm md:text-base"
                 placeholder="Enter your 12-digit Krishi Card number"
               />
               <p className="text-xs text-gray-500 mt-1">Enter your 12-digit Krishi Card registration number</p>
@@ -58,7 +58,7 @@ function page() {
                 required
                 pattern="[0-9]{4,6}"
                 maxLength={6}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors text-sm md:text-base"
                 placeholder="Enter your Krishi Card PIN"
               />
               <p className="text-xs text-gray-500 mt-1">Enter your 4-6 digit PIN associated with your Krishi Card</p>
@@ -126,7 +126,7 @@ function page() {
           {/* Sign Up Link */}
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Don't have a Krishi Card?{' '}
+              Don&apos;t have a Krishi Card?{' '}
               <Link href="/signup" className="text-green-600 hover:text-green-700 font-medium transition-colors">
                 Register here
               </Link>

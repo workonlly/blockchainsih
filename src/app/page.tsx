@@ -1,8 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -15,13 +18,15 @@ export default function Home() {
       <div className="h-[100vh] w-full bg-white/95 backdrop-filter backdrop-blur-sm border border-gray-100 shadow-lg rounded-2xl overflow-hidden flex flex-col">
         
         {/* Navigation Bar */}
-        <nav className="p-6 border-b border-gray-100 bg-white/90">
+        <nav className="p-4 md:p-6 border-b border-gray-100 bg-white/90">
           <div className="flex flex-row justify-between items-center max-w-7xl mx-auto">
             <div className="flex items-center">
               <Image src="/globe.svg" alt="Logo" width={32} height={32} className="mr-3 text-green-600" />
-              <div className="text-3xl font-bold text-gray-800">Agri<span className="text-green-700">Chain</span></div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-800">Agri<span className="text-green-700">Chain</span></div>
             </div>
-            <div className="flex flex-row items-center gap-8">
+            
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex flex-row items-center gap-8">
               <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Home</div>
               <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Store</div>
               <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium">Marketplace</div>
@@ -31,56 +36,80 @@ export default function Home() {
                 <button className="bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition-colors">Login</button>
               </Link>
             </div>
+
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden flex flex-col justify-center items-center w-8 h-8"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMenuOpen ? 'rotate-45 translate-y-1' : '-translate-y-0.5'}`}></span>
+              <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
+              <span className={`bg-gray-800 block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMenuOpen ? '-rotate-45 -translate-y-1' : 'translate-y-0.5'}`}></span>
+            </button>
+          </div>
+
+          {/* Mobile Navigation Menu */}
+          <div className={`md:hidden mt-4 ${isMenuOpen ? 'block' : 'hidden'}`}>
+            <div className="bg-white/95 backdrop-blur-sm rounded-lg shadow-lg p-4 space-y-4">
+              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Home</div>
+              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Store</div>
+              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Marketplace</div>
+              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">News</div>
+              <div className="text-gray-700 hover:text-green-600 transition-colors cursor-pointer font-medium py-2">Token</div>
+              <Link href="/login" className="block">
+                <button className="w-full bg-green-700 text-white px-4 py-2 rounded-full hover:bg-green-800 transition-colors">Login</button>
+              </Link>
+            </div>
           </div>
         </nav>
         
         {/* Main Content */}
         <div className="flex-1 overflow-y-auto">
            {/* Hero Section */}
-          <div className="py-12 px-6 max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="md:w-1/2">
-                <h1 className="text-6xl font-bold text-gray-800 mb-4">Blockchain for <span className="text-green-700">Agriculture</span></h1>
-                <p className="text-gray-600 text-lg mb-8">Transparent supply chain management for agricultural products. Track from farm to table with immutable blockchain records.</p>
-                <div className="flex gap-4">
+          <div className="py-8 md:py-12 px-4 md:px-6 max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+              <div className="md:w-1/2 text-center md:text-left">
+                <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Blockchain for <span className="text-green-700">Agriculture</span></h1>
+                <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Transparent supply chain management for agricultural products. Track from farm to table with immutable blockchain records.</p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                   <button className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">Trace Products</button>
                   <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium">Learn More</button>
                 </div>
               </div>
               <div className="md:w-1/2 flex justify-center">
-                <div className="relative w-80 h-80">
+                <div className="relative w-64 h-64 md:w-80 md:h-80">
                   <div className="absolute inset-0 bg-green-100 rounded-full opacity-20"></div>
-                  <Image src="/window.svg" alt="Blockchain" width={300} height={300} className="relative z-10" />
+                  <Image src="/window.svg" alt="Blockchain" width={250} height={250} className="relative z-10 md:w-[300px] md:h-[300px]" />
                 </div>
               </div>
             </div>
           </div>
           
           {/* Stakeholder Categories */}
-          <div className="py-12 px-6 bg-gray-50/50 backdrop-filter backdrop-blur-sm">
+          <div className="py-8 md:py-12 px-4 md:px-6 bg-gray-50/50 backdrop-filter backdrop-blur-sm">
             <div className="max-w-7xl mx-auto">
-              <h2 className="text-4xl font-bold text-gray-800 mb-2 text-center">Stakeholder Access</h2>
-              <p className="text-gray-600 mb-10 text-center max-w-2xl mx-auto">Specialized interfaces for each participant in the supply chain</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 text-center">Stakeholder Access</h2>
+              <p className="text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto px-4">Specialized interfaces for each participant in the supply chain</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-green-800 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-64 flex items-end p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                <div className="bg-green-800 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">Farmers</h3>
-                    <p className="text-gray-200">Register produce, set fair prices, and track sales</p>
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">Farmers</h3>
+                    <p className="text-gray-200 text-sm md:text-base">Register produce, set fair prices, and track sales</p>
                   </div>
                 </div>
                 
-                <div className="bg-green-900 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-64 flex items-end p-6">
+                <div className="bg-green-900 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">Distributors</h3>
-                    <p className="text-gray-200">Verify origin, manage logistics, and ensure quality</p>
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">Distributors</h3>
+                    <p className="text-gray-200 text-sm md:text-base">Verify origin, manage logistics, and ensure quality</p>
                   </div>
                 </div>
                 
-                <div className="bg-green-950 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-64 flex items-end p-6">
+                <div className="bg-green-950 text-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all cursor-pointer h-48 md:h-64 flex items-end p-6">
                   <div>
-                    <h3 className="text-2xl font-bold mb-2">Retailers</h3>
-                    <p className="text-gray-200">Confirm authenticity and provide transparency to consumers</p>
+                    <h3 className="text-xl md:text-2xl font-bold mb-2">Retailers</h3>
+                    <p className="text-gray-200 text-sm md:text-base">Confirm authenticity and provide transparency to consumers</p>
                   </div>
                 </div>
               </div>
@@ -88,19 +117,19 @@ export default function Home() {
           </div>
           
           {/* Features Section */}
-          <div className="py-12 px-6 max-w-7xl mx-auto">
-            <h2 className="text-4xl font-bold text-gray-800 mb-2 text-center">Key Features</h2>
-            <p className="text-gray-600 mb-10 text-center max-w-2xl mx-auto">How our blockchain solution ensures transparency</p>
+          <div className="py-8 md:py-12 px-4 md:px-6 max-w-7xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 text-center">Key Features</h2>
+            <p className="text-gray-600 mb-8 md:mb-10 text-center max-w-2xl mx-auto px-4">How our blockchain solution ensures transparency</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
               <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all p-6">
                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">QR Code Tracking</h3>
-                <p className="text-gray-600">Scan product QR codes to view complete journey from farm to store</p>
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">QR Code Tracking</h3>
+                <p className="text-gray-600 text-sm md:text-base">Scan product QR codes to view complete journey from farm to store</p>
               </div>
               
               <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all p-6">
@@ -109,8 +138,8 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Smart Contracts</h3>
-                <p className="text-gray-600">Automated agreements ensure fair pricing and timely payments</p>
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">Smart Contracts</h3>
+                <p className="text-gray-600 text-sm md:text-base">Automated agreements ensure fair pricing and timely payments</p>
               </div>
               
               <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all p-6">
@@ -119,8 +148,8 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-2">Quality Verification</h3>
-                <p className="text-gray-600">Immutable records of quality checks and certifications</p>
+                <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-2">Quality Verification</h3>
+                <p className="text-gray-600 text-sm md:text-base">Immutable records of quality checks and certifications</p>
               </div>
             </div>
           </div>
@@ -236,11 +265,11 @@ export default function Home() {
           </div>
           
           {/* CTA Section */}
-          <div className="py-12 px-6 bg-green-900 text-white">
+          <div className="py-8 md:py-12 px-4 md:px-6 bg-green-900 text-white">
             <div className="max-w-7xl mx-auto text-center">
-              <h2 className="text-3xl font-bold mb-6">Ready to bring transparency to agriculture?</h2>
-              <p className="text-gray-200 mb-8 max-w-2xl mx-auto">Join our platform today and be part of the agricultural revolution. Whether you're a farmer, distributor, retailer, or consumer, AgriChain helps you participate in a more transparent food system.</p>
-              <div className="flex flex-wrap justify-center gap-4 mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-4 md:mb-6">Ready to bring transparency to agriculture?</h2>
+              <p className="text-gray-200 mb-6 md:mb-8 max-w-2xl mx-auto text-sm md:text-base">Join our platform today and be part of the agricultural revolution. Whether you&apos;re a farmer, distributor, retailer, or consumer, AgriChain helps you participate in a more transparent food system.</p>
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-6 md:mb-8">
                 <button className="bg-white text-green-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-colors font-medium">Register Now</button>
                 <button className="border border-white text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">Schedule Demo</button>
               </div>
