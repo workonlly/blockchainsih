@@ -88,7 +88,9 @@ export default function Home() {
                 <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">Blockchain for <span className="text-green-700">Agriculture</span></h1>
                 <p className="text-gray-600 text-base md:text-lg mb-6 md:mb-8">Transparent supply chain management for agricultural products. Track from farm to table with immutable blockchain records.</p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                  <button className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">Trace Products</button>
+                  <Link href="/store">
+                    <button className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition-colors font-medium">Trace Products</button>
+                  </Link>
                   <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium">Learn More</button>
                 </div>
               </div>
