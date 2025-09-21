@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Swiper from './swiper';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -102,7 +103,10 @@ export default function Home() {
               </div>
             </div>
           </div>
-          
+         {/* swiper section */}
+          <Swiper/>
+         {/* swiper section end */}
+         
           {/* Product Categories */}
           <div className="py-8 md:py-12 px-4 md:px-6 bg-gray-50/50 backdrop-filter backdrop-blur-sm">
             <div className="max-w-7xl mx-auto">
